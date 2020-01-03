@@ -1,4 +1,4 @@
-// var allHomeData = {};
+var allHomeData = {};
 var pageLoadTimeoutMs = 6000;
 
 function sleep(timeMs) {
@@ -71,7 +71,7 @@ function getHomeDataFromPage(currentWindow) {
   var details = {
     'address': currentWindow.$j('.building-title .incognito')[0].innerHTML.trim(),
     'price': parseInt(currentWindow.$j('.price ')[0].innerHTML.split('$')[1].split('<span')[0].replace(',', '').trim()),
-    'url': window.location.href,
+    'url': currentWindow.location.href,
     'daysOnMarket': parseInt(currentWindow.$j('.Vitals-detailsInfo .Vitals-data')[0].innerHTML.replace(' days', '').trim()),
   };
 
@@ -97,17 +97,30 @@ function getHomeDataFromPage(currentWindow) {
     agentsList.push(agentInfos[i].innerHTML.trim());
   }
   details['agentsList'] = agentsList;
-  details['description'] = $j('.Description-block', description)[0].innerText;
+  details['description'] = currentWindow.$j('.Description-block', description)[0].innerText;
 
-  var buildingInfo = currentWindow.$j('.BuildingInfo')[0];
-  var infoItems = currentWindow.$j('.BuildingInfo-item', buildingInfo);
-  details['address'] = currentWindow.$j('a', infoItems[0])[0].innerHTML.trim() + ', ' + currentWindow.$j('span', infoItems[0])[0].innerHTML.replace('&nbsp;', ' ').trim();
-  details['homeType'] = currentWindow.$j('span', infoItems[1])[0].innerHTML.split(' in ')[0].trim();
-  var infoDetails = currentWindow.$j('.BuildingInfo-detail', infoItems[2]);
-  for (var i = 0; i < infoDetails.length; i ++) {
-    var infoDetail = infoDetails[i];
-    if (infoDetail.innerHTML.includes('Built')) {
-      details['yearBuilt'] = parseInt(currentWindow.$j('span', infoDetail)[0].innerHTML.split('span>')[1].replace(' Built', '').trim());
+  var buildingInfos = currentWindow.$j('.BuildingInfo');
+  if (buildingInfos.length > 0) {
+    var infoItems = currentWindow.$j('.BuildingInfo-item', buildingInfos[0]);
+    if (infoItems.length > 0) {
+      var as = currentWindow.$j('a', infoItems[0]);
+      var spans = currentWindow.$j('span', infoItems[0]);
+      if (as.length > 0 && spans.length > 0) {
+        details['address'] = as[0].innerHTML.trim() + ', ' + spans[0].innerHTML.replace('&nbsp;', ' ').trim();
+      }
+
+      var spans = currentWindow.$j('span', infoItems[1]);
+      if (spans.length > 0) {
+        details['homeType'] = spans[0].innerHTML.split(' in ')[0].trim();
+      }
+
+      var infoDetails = currentWindow.$j('.BuildingInfo-detail', infoItems[2]);
+      for (var i = 0; i < infoDetails.length; i ++) {
+        var infoDetail = infoDetails[i];
+        if (infoDetail.innerHTML.includes('Built')) {
+          details['yearBuilt'] = parseInt(currentWindow.$j('span', infoDetail)[0].innerHTML.split('span>')[1].replace(' Built', '').trim());
+        }
+      }
     }
   }
 
@@ -118,5 +131,5 @@ function getHomeDataFromPage(currentWindow) {
 
 
 getUrlsWindow =  window.open('https://www.streeteasy.com', 'WindowTitle', 'height=800,width=600');
-// getAllArticlesForSearch('https://streeteasy.com/for-sale/east-flatbush/price:400000-900000%7Cbeds%3E=3%7Cbaths%3E=2', 'for sale', getUrlsWindow);
-getAllArticlesForSearch('https://streeteasy.com/for-rent/east-flatbush/beds%3E=1', 'for rent', getUrlsWindow);
+getAllArticlesForSearch('https://streeteasy.com/for-sale/east-flatbush/price:400000-900000%7Cbeds%3E=3%7Cbaths%3E=2', 'for sale', getUrlsWindow);
+// getAllArticlesForSearch('https://streeteasy.com/for-rent/east-flatbush/beds%3E=1', 'for rent', getUrlsWindow);

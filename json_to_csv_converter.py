@@ -2,6 +2,7 @@ def transform_data_to_text(details):
     stringLine = ''
     stringLine += str(details['price']) + ','
     stringLine += str(details.get('squareFeet')) + ','
+    stringLine += str(1.0 * details['price'] / details.get('squareFeet')) + ','
     stringLine += str(details['beds']) + ','
     stringLine += str(details.get('baths')) + ','
     stringLine += str(details['yearBuilt']) + ','
