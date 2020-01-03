@@ -28,7 +28,6 @@ async function getAllArticlesForSearch(url, listingType, currentWindow) {
 
 function alreadyChecked(article, currentWindow) {
   var shortAddress = currentWindow.$j('.details-title a', article)[0].innerHTML.trim();
-  console.log("Short address of house is", shortAddress);
   var fullAddresses = Object.keys(allHomeData);
 
   for (var i = 0; i < fullAddresses.length; i ++) {
@@ -48,6 +47,9 @@ async function getAllArticlesForWindow(listUrl, listingType, currentWindow) {
       break;
     }
 
+    var shortAddress = currentWindow.$j('.details-title a', currentArticles[i])[0].innerHTML.trim();
+    console.log("Short address of house is", shortAddress);
+
     var checked = alreadyChecked(currentArticles[i], currentWindow);
     if (checked) {
       console.log('Page has already been checked', checked);
@@ -58,7 +60,7 @@ async function getAllArticlesForWindow(listUrl, listingType, currentWindow) {
 
     var homeData = getHomeDataFromPage(currentWindow);
     homeData['listingType'] = listingType;
-    allHomeData[homeData.address] = homeData;
+    allHomeData[shortAddress] = homeData;
 
     currentWindow.location.href = listUrl;
     await sleep(pageLoadTimeoutMs);
