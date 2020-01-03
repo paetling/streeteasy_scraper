@@ -1,5 +1,5 @@
-var allHomeData = {};
-var pageLoadTimeoutMs = 6000;
+// var allHomeData = {};
+var pageLoadTimeoutMs = 8000;
 
 function sleep(timeMs) {
   return new Promise(function(resolve) {
@@ -131,5 +131,5 @@ function getHomeDataFromPage(currentWindow) {
 
 
 getUrlsWindow =  window.open('https://www.streeteasy.com', 'WindowTitle', 'height=800,width=600');
-getAllArticlesForSearch('https://streeteasy.com/for-sale/east-flatbush/price:400000-900000%7Cbeds%3E=3%7Cbaths%3E=2', 'for sale', getUrlsWindow);
-// getAllArticlesForSearch('https://streeteasy.com/for-rent/east-flatbush/beds%3E=1', 'for rent', getUrlsWindow);
+// getAllArticlesForSearch('https://streeteasy.com/for-sale/east-flatbush/price:400000-900000%7Cbeds%3E=3%7Cbaths%3E=2', 'for sale', getUrlsWindow);
+getAllArticlesForSearch('https://streeteasy.com/for-rent/east-flatbush/beds%3E=1', 'for rent', getUrlsWindow);
